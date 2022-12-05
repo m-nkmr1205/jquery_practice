@@ -9,8 +9,18 @@
 // }).fail(function (err) {
 //   displayError(err)
 // });
+
+
+
 $(function(){
-  var pageCount = 1;
+  let pageCount = 1;
+
+  function word(sw){
+     previousVal = sw; //変数宣言を外してグローバル変数として定義
+    // console.log(previousVal)
+   };
+    
+
   // 検索結果を表示する関数
   function displayResult(result) {
     // for分を使って繰り返し処理実行。
@@ -56,17 +66,24 @@ $(function(){
       "url": `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       "method": "GET",
     }
+ 
+
     //.doneが通信成功した時の処理、”response”が引数となっていて通信した結果を受け取っている
     $.ajax(settings).done(function (response) {
       const result = response['@graph'][0]['items'];
 
       // 検索ワードが同じ時と違う時の条件分岐
-      if(searchWord == searchWord){  //ここの条件の仕方が分からない
+      if(searchWord === previousVal){  //ここの条件の仕方が分からない
         pageCount = pageCount + 1;
+        console.log('前回と同じ時')
+        console.log(previousVal)
       } else {
         pageCount = 1;
         $('ul').empty()  //検索ワードが違う場合は前回の検索結果を削除する。
+        console.log('前回と違う時')
+        console.log(previousVal)
       }
+
 
       // 検索結果があった場合と無かった場合で条件分岐し結果の表示を変える
       if(result){
@@ -79,6 +96,8 @@ $(function(){
       }).fail(function (err) {
         displayError(err)
       });
+
+      word(searchWord)
     }); //検索ボタン、クリックイベントここまで
 
   // リセットボタンのクリックイベント
