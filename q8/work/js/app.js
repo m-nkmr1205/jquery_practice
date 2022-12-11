@@ -14,12 +14,14 @@
 
 $(function(){
   let pageCount = 1;
-
-  function word(sw){
-     previousVal = sw; //変数宣言を外してグローバル変数として定義
-    // console.log(previousVal)
-   };
-    
+  let previousVal = $("#search-input").val() // 読み込み時に処理されるので値が入らない
+ 
+  // 関数を使って前回値であるsearchWordを渡す？
+  // スコープの関係でpreviousValは外から参照できない。
+  // function word(sw){
+  //   previousVal = sw;
+  //  console.log(previousVal)
+  // };
 
   // 検索結果を表示する関数
   function displayResult(result) {
@@ -35,15 +37,24 @@ $(function(){
     // prepend()メソッド、指定の要素の先頭に子要素を追加
     // 検索結果を表示するHTML要素を追加
     $('.lists').prepend('<li class="lists-item"><div class="list-inner" id="list-inner"><p class="title" id="title" ></p><p class="creator" id="creator" ></p><p class="publisher" id="publisher" ></p><a class="info" id="info">書籍情報</a></div></li>')
+    // 表示結果を左寄せする
+    $('.list-inner').css("text-align", "left")
 
     // 結果を表示すする
-    // 対象要素はidで指定することによってDOMを特定する（classは複数存在するため対象のDOMを特定する事が難しい）
-    $('#title').text("タイトル：" + title);
-    $('#creator').text("作者：" + creator);
-    $('#publisher').text("出版社：" + publisher);
+    //IDでセレクタを指定すると同じIDが複数出来てしまうので使用不可。IDは1ページに1つのみ。
+    $('.title').text("タイトル：" + title);
+    $('.creator').text("作者：" + creator);
+    $('.publisher').text("出版社：" + publisher);
     // attr()を使用する事で属性を操作可能。書き方→対象要素.attr( { 属性:'値', 属性:'値', 属性:'値',..})
     // href属性を追加してリンクを設定
-    $('#info').attr({href: info});
+    $('.info').attr({href: info});
+
+    //繰り返し処理によって同じClass名が複数存在するとDomの特定が難しいため、毎回class名を一旦削除する。
+    $('.title').removeClass();
+    $('.creator').removeClass();
+    $('.publisher').removeClass();
+    $('.info').removeClass();
+
     } //for文ここまで
   }; //displayResultここまで
 
@@ -73,8 +84,7 @@ $(function(){
       const result = response['@graph'][0]['items'];
 
       // 検索ワードが同じ時と違う時の条件分岐
-      if(searchWord === previousVal){  //ここの条件の仕方が分からない
-        pageCount = pageCount + 1;
+      if(searchWord == previousVal){
         console.log('前回と同じ時')
         console.log(previousVal)
       } else {
@@ -83,7 +93,6 @@ $(function(){
         console.log('前回と違う時')
         console.log(previousVal)
       }
-
 
       // 検索結果があった場合と無かった場合で条件分岐し結果の表示を変える
       if(result){
@@ -96,8 +105,7 @@ $(function(){
       }).fail(function (err) {
         displayError(err)
       });
-
-      word(searchWord)
+      // word(searchWord)
     }); //検索ボタン、クリックイベントここまで
 
   // リセットボタンのクリックイベント
