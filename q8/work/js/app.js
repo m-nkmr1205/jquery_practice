@@ -14,14 +14,8 @@
 
 $(function(){
   let pageCount = 1;
-  let previousVal = $("#search-input").val() // 読み込み時に処理されるので値が入らない
- 
-  // 関数を使って前回値であるsearchWordを渡す？
-  // スコープの関係でpreviousValは外から参照できない。
-  // function word(sw){
-  //   previousVal = sw;
-  //  console.log(previousVal)
-  // };
+   //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
+  let previousVal = $("#search-input").val()
 
   // 検索結果を表示する関数
   function displayResult(result) {
@@ -61,12 +55,12 @@ $(function(){
 
   // ajaxの読み込みに失敗した時の処理(検索ワードが空の時)
   function displayError(err){
+    $(".list-inner").remove();  //前回の検索結果を削除
     $('.inner').prepend('<div class="message" >検索キーワードが有効ではありません。<br>1文字以上で検索して下さい。</div>')
   };
 
 //検索結果が無かった時の処理
   function message(){
-    console.log("検索結果が見つかりませんでした")
     $('.inner').prepend('<div class="message" >検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>')
   };
 
@@ -77,6 +71,7 @@ $(function(){
       "url": `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       "method": "GET",
     }
+    $(".message").remove();  //エラー・検索結果無しの時のメッセージがあれば削除する
  
 
     //.doneが通信成功した時の処理、”response”が引数となっていて通信した結果を受け取っている
@@ -85,13 +80,12 @@ $(function(){
 
       // 検索ワードが同じ時と違う時の条件分岐
       if(searchWord == previousVal){
-        console.log('前回と同じ時')
-        console.log(previousVal)
+        pageCount += 1;
+        previousVal = searchWord;  //今回の検索ワードをグローバル変数に置き換え
       } else {
         pageCount = 1;
+        previousVal = searchWord;
         $('ul').empty()  //検索ワードが違う場合は前回の検索結果を削除する。
-        console.log('前回と違う時')
-        console.log(previousVal)
       }
 
       // 検索結果があった場合と無かった場合で条件分岐し結果の表示を変える
@@ -105,12 +99,12 @@ $(function(){
       }).fail(function (err) {
         displayError(err)
       });
-      // word(searchWord)
     }); //検索ボタン、クリックイベントここまで
 
   // リセットボタンのクリックイベント
   $(".reset-btn").on("click", function(){
-    $(".inner").detach();  //検索結果を削除
+    $(".lists").empty();  //検索結果の要素の中身を削除する
+    $(".message").remove();  //エラーメッセージ等は要素ごと削除
     $("#search-input").val('')  //検索ワードを空にする
   }); //リセットボタンここまで
 
