@@ -78,6 +78,17 @@ $(function(){
     $.ajax(settings).done(function (response) {
       const result = response['@graph'][0]['items'];
 
+      // 検索結果があった場合と無かった場合で条件分岐し結果の表示を変える
+      if(result){
+        displayResult(result)
+      } else {
+          message()
+      };
+      //.failが通信に失敗した時の処理、”err”にサーバーから送られてきたエラー内容を受けとる。
+      }).fail(function (err) {
+        displayError(err)
+      });
+
       // 検索ワードが同じ時と違う時の条件分岐
       if(searchWord == previousVal){
         pageCount += 1;
@@ -87,19 +98,7 @@ $(function(){
         previousVal = searchWord;
         $('ul').empty()  //検索ワードが違う場合は前回の検索結果を削除する。
       }
-
-      // 検索結果があった場合と無かった場合で条件分岐し結果の表示を変える
-      if(result){
-        displayResult(result)
-      } else {
-          message()
-      };
-
-      //.failが通信に失敗した時の処理、”err”にサーバーから送られてきたエラー内容を受けとる。
-      }).fail(function (err) {
-        displayError(err)
-      });
-    }); //検索ボタン、クリックイベントここまで
+    }); //検索ボタンのクリックイベントここまで
 
   // リセットボタンのクリックイベント
   $(".reset-btn").on("click", function(){

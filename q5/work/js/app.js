@@ -6,7 +6,7 @@ $(function(){
   },
   // ホバーが外れた時ドロップダウンメニューを非表示（slideUp）する
   function(){
-    $(this).children("ul").slideUp();
+    $(this).children("ul").stop().slideUp();  //slideUpの前にstopを入れてホバーが外れた瞬間にアニメーションが止まる様にする。
   });
 });
 

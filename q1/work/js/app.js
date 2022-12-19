@@ -20,9 +20,7 @@ $(function(){
   // q4ボタンをクリック時にjs発火
   $("#q4").on("click", function(){
     // q4ボタンサイズが拡大される
-    $(this).css("width", 300);
-    $(this).css("padding", 50);
-    $(this).css("font-size", 20);
+    $(this).addClass("large");
   });
 
   // q5ボタンをクリックした時にjs発火
@@ -53,19 +51,18 @@ $(function(){
   });
 
   // q8ボタンにホバー時にjs発火
-  $("#q8").hover(function(){
-      // ホバー時にボタンサイズを拡大する
-      $(this).css("width", 300);
-      $(this).css("padding", 50);
-      $(this).css("font-size", 20);
+  $("#q8").hover(
+    function(){
+      // ホバー時にlargeクラスを追加しボタンサイズを拡大する
+      $(this).addClass("large");
     },
     // マウスカーソルがボタンから離れた時の処理
     function() {
-      // 何も値を指定しない事でホバー前の状態に戻す
-      $(this).css("width", "");
-      $(this).css("padding", "");
-      $(this).css("font-size", "");
-    });
+      // largeクラスを削除しボタンサイズを元に戻す
+      $(this).removeClass('large');
+    }
+    );
+
 
   // q9ボタンをクリックした時にjs発火
   $("#q9 li").on("click", function() {
@@ -80,8 +77,9 @@ $(function(){
     // q10のインデックス番号を取得する関数を宣言
     const index = $("#q10 li").index(this);
     // q10と同じインデックス番号のq11要素を操作する
-    $("#q11 li").eq(index).css("width", 300);
-    $("#q11 li").eq(index).css("font-size", 30);
+    $("#q11 li").eq(index).css({
+      "width" : 300,
+      "font-size" : 30
+    });
   });
-z
 });
