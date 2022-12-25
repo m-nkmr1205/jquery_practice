@@ -27,13 +27,13 @@ $(function(){
   $("#q5").on("click", function(){
     // DOMを挿入する
     // 指定した要素の直前に追加
-    $(this).before("<span>DOMの前</span>");
-    // 指定した要素の最初に追加
-    $(this).prepend("<span>DOMの中の前</span>");
-    // 指定した要素の最後に追加
-    $(this).append("<span>DOMの中の後</span>");
-    // 指定した要素の直後に追加
-    $(this).after("<span>DOMの後ろ</span>");
+    $(this).before("<span>DOMの前</span>")
+      // 指定した要素の最初に追加
+      .prepend("<span>DOMの中の前</span>")
+      // 指定した要素の最後に追加
+      .append("<span>DOMの中の後</span>")
+      // 指定した要素の直後に追加
+      .after("<span>DOMの後ろ</span>")
   });
 
   // q6ボタンをクリックした時にjs発火
@@ -76,10 +76,7 @@ $(function(){
   $("#q10 li").on("click", function() {
     // q10のインデックス番号を取得する関数を宣言
     const index = $("#q10 li").index(this);
-    // q10と同じインデックス番号のq11要素を操作する
-    $("#q11 li").eq(index).css({
-      "width" : 300,
-      "font-size" : 30
-    });
+    // q10と同じインデックス番号のq11要素に要素を大きくするクラスを追加して要素を拡大させる。
+    $("#q11 li").eq(index).addClass("large");
   });
 });
