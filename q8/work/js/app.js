@@ -48,7 +48,7 @@ $(function(){
       }).fail(function (err) {
         displayError(err)
       });
-      //ajaxの処理ここまで      
+      //ajaxの処理ここまで
     }); //検索ボタンのクリックイベントここまで
 
   // 検索結果を表示する関数。displayResultここから
@@ -57,13 +57,17 @@ $(function(){
     if(result){
       // for分を使って繰り返し処理実行。
       // 書き方→for(初期値; 条件式; 増減式) {処理の実装}
-      for (var i = 0; i < 20; i++){
+      for (var i = 0; result[i]; i++){
         // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
-        // 検索結果が20件無い場合にエラーが出るので三項演算子を使用して結果が無い場合は空の値を入れる
-        const title = result ? result[i].title : ""
-        const creator = result ? result[i]['dc:creator'] : ""
-        const publisher = result ? result[i]['dc:publisher'] : ""
-        const info = result ? result[i].link['@id'] : ""
+        const title = result[i].title;
+        const creator = result[i]['dc:creator'] 
+        const publisher = result[i]['dc:publisher'] 
+        const info = result[i].link['@id'] 
+
+        // const title = result[i] ? result[i].title : $('.title').removeClass();
+        // const creator = result[i] ? result[i]['dc:creator'] : null
+        // const publisher = result[i]? result[i]['dc:publisher'] : null
+        // const info = result[i] ? result[i].link['@id'] : null
 
         // prepend()メソッド、指定の要素の先頭に子要素を追加
         // 検索結果を表示するHTML要素を追加
