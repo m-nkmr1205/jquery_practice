@@ -36,8 +36,6 @@ $(function(){
     }
     $(".message").remove();  //エラー・検索結果無しの時のメッセージがあれば削除する
 
-    
-
     //.doneが通信成功した時の処理、”response”が引数となっていて通信した結果を受け取っている
     $.ajax(settings).done(function (response) {
       const result = response['@graph'][0].items;
@@ -60,11 +58,12 @@ $(function(){
       // for分を使って繰り返し処理実行。
       // 書き方→for(初期値; 条件式; 増減式) {処理の実装}
       for (var i = 0; i < 20; i++){
-      // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
-        const title = result[i].title;
-        const creator = result[i]['dc:creator'];
-        const publisher = result[i]['dc:publisher'];
-        const info = result[i].link['@id'];
+        // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
+        // 検索結果が20件無い場合にエラーが出るので三項演算子を使用して結果が無い場合は空の値を入れる
+        const title = result ? result[i].title : ""
+        const creator = result ? result[i]['dc:creator'] : ""
+        const publisher = result ? result[i]['dc:publisher'] : ""
+        const info = result ? result[i].link['@id'] : ""
 
         // prepend()メソッド、指定の要素の先頭に子要素を追加
         // 検索結果を表示するHTML要素を追加
