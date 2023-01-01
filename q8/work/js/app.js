@@ -53,23 +53,17 @@ $(function(){
 
   // 検索結果を表示する関数。displayResultここから
   function displayResult(result) {
-    //resultがあった時と無かった時で条件分岐する
-    if(result){
-      // for分を使って繰り返し処理実行。
-      // 書き方→for(初期値; 条件式; 増減式) {処理の実装}
-      for (var i = 0; result[i]; i++){
-        // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
-        const title = result[i].title;
-        const creator = result[i]['dc:creator'] 
-        const publisher = result[i]['dc:publisher'] 
-        const info = result[i].link['@id'] 
+    //if文でresultがあった時と無かった時で条件分岐する
+    if(result){  //resultがあった時の処理
+      
+      // 「forEach()」を使ってresultにある要素の数だけ繰り返し処理を実行
+      result.forEach((value) => {
+        const title = value.title ? value.title : 'タイトル不明'
+        const creator = value['dc:creator'] ? value['dc:creator'] : '作者不明'
+        const publisher = value['dc:publisher'] ? value ['dc:publisher'] : '出版社不明'
+        const info = value.link['@id'] ? value.link['@id'] :'書籍情報不明'
 
-        // const title = result[i] ? result[i].title : $('.title').removeClass();
-        // const creator = result[i] ? result[i]['dc:creator'] : null
-        // const publisher = result[i]? result[i]['dc:publisher'] : null
-        // const info = result[i] ? result[i].link['@id'] : null
-
-        // prepend()メソッド、指定の要素の先頭に子要素を追加
+      　 // prepend()メソッド、指定の要素の先頭に子要素を追加
         // 検索結果を表示するHTML要素を追加
         $('.lists').prepend('<li class="lists-item"><div class="list-inner" id="list-inner"><p class="title" id="title" >タイトル：' + title + '</p><p class="creator" id="creator" >作者：' + creator + '</p><p class="publisher" id="publisher" >出版社：' + publisher + '</p><a href=' + info + ' class="info" id="info" target="_blank">書籍情報</a></div></li>')
         // 表示結果を左寄せする
@@ -80,7 +74,29 @@ $(function(){
         $('.creator').removeClass();
         $('.publisher').removeClass();
         $('.info').removeClass();
-        } //for文ここまで
+      })
+
+      // for分を使って繰り返し処理実行。
+      // 書き方→for(初期値; 条件式; 増減式) {処理の実装}
+      // for (var i = 0; result[i]; i++){
+      //   // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
+      //   const title = result[i].title;
+      //   const creator = result[i]['dc:creator'] 
+      //   const publisher = result[i]['dc:publisher'] 
+      //   const info = result[i].link['@id'] 
+
+      //   // prepend()メソッド、指定の要素の先頭に子要素を追加
+      //   // 検索結果を表示するHTML要素を追加
+      //   $('.lists').prepend('<li class="lists-item"><div class="list-inner" id="list-inner"><p class="title" id="title" >タイトル：' + title + '</p><p class="creator" id="creator" >作者：' + creator + '</p><p class="publisher" id="publisher" >出版社：' + publisher + '</p><a href=' + info + ' class="info" id="info" target="_blank">書籍情報</a></div></li>')
+      //   // 表示結果を左寄せする
+      //   $('.list-inner').css("text-align", "left")
+
+      //   //繰り返し処理によって同じClass名が複数存在するとDomの特定が難しいため、毎回class名を一旦削除する。
+      //   $('.title').removeClass();
+      //   $('.creator').removeClass();
+      //   $('.publisher').removeClass();
+      //   $('.info').removeClass();
+      //   } //for文ここまで
 
      //resultが無かった時の処理
     } else {
