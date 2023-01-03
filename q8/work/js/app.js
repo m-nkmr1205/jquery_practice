@@ -13,10 +13,10 @@
 
 
 $(function(){
-  let pageCount = 1;
+  let pageCount = 0;
    //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
   let previousVal = $("#search-input").val(null)
-
+console.log(previousVal)
   // 検索ボタンをクリックした時に発火
   $(".search-btn").on("click", function(){
     const searchWord =  $("#search-input").val() //検索ワードを格納
@@ -34,7 +34,7 @@ $(function(){
       "url": `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       "method": "GET",
     }
-    $(".message").remove();  //エラー・検索結果無しの時のメッセージがあれば削除する
+  
 
     //.doneが通信成功した時の処理、”response”が引数となっていて通信した結果を受け取っている
     $.ajax(settings).done(function (response) {
@@ -53,9 +53,11 @@ $(function(){
 
   // 検索結果を表示する関数。displayResultここから
   function displayResult(result) {
+    $(".message").remove();  //エラー・検索結果無しの時のメッセージがあれば削除する
+
     //if文でresultがあった時と無かった時で条件分岐する
     if(result){  //resultがあった時の処理
-      
+
       // 「forEach()」を使ってresultにある要素の数だけ繰り返し処理を実行
       result.forEach((value) => {
         const title = value.title ? value.title : 'タイトル不明'
@@ -106,6 +108,7 @@ $(function(){
 
   // ajaxの読み込みに失敗した時の処理(検索ワードが空の時)
   function displayError(err){
+    console.log(err)
     $(".list-inner").remove();  //前回の検索結果を削除
     $('.inner').prepend('<div class="message" >検索キーワードが有効ではありません。<br>1文字以上で検索して下さい。</div>')
   };
@@ -115,6 +118,8 @@ $(function(){
     $(".lists").empty();  //検索結果の要素の中身を削除する
     $(".message").remove();  //エラーメッセージ等は要素ごと削除
     $("#search-input").val('')  //検索ワードを空にする
+    pageCount = 1;
+    previousVal = $("#search-input").val(null)
   }); //リセットボタンここまで
 
 }); //最後の閉じタグ
