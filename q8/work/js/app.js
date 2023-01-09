@@ -15,20 +15,18 @@
 $(function(){
   let pageCount = 0;
    //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
-  let previousVal = $("#search-input").val(null)
+  let previousVal = "";
 
   // 検索ボタンをクリックした時に発火
   $(".search-btn").on("click", function(){
     const searchWord =  $("#search-input").val() //検索ワードを格納
-console.log(searchWord)
+
     // 検索ワードが同じ時と違う時の条件分岐
     if(searchWord === previousVal){ //今回検索ワードと前回検索ワードが同じ場合
       pageCount += 1;
-    } else if(searchWord == ""){ //検索ワードに入力が無い場合
-      previousVal = "";
     } else { //検索ワードが前回と違った場合
       pageCount = 1;
-      previousVal = searchWord;  //今回の検索ワードをグローバル変数に置き換え
+      previousVal = searchWord;  //今回の検索ワードをグローバル変数に置き換え。
       $('ul').empty()  //検索ワードが違う場合は前回の検索結果を削除する。
     }
 
@@ -81,13 +79,16 @@ console.log(searchWord)
   // ajaxの読み込みに失敗した時の処理(検索ワードが空の時)
   function displayError(err){
     $(".list-inner").remove();  //前回の検索結果を削除
+    $(".message").remove();
     console.log(err)
     let status = err.status  //ステータス番号を取得
 
     // ステータス番号が0の時はメッセージを表示させる。
     if(status === 0){
       $('.inner').prepend('<div class="message" >正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>')
-    } else {};
+    } else {
+      $('.inner').prepend('<div class="message" >予期せぬエラーが発生しました<br>再読み込みを行なってください。</div>')
+    };
 
   }; //ajaxの読み込みに失敗した時の処理(検索ワードが空の時)ここまで
 
