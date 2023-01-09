@@ -10,8 +10,6 @@
 //   displayError(err)
 // });
 
-
-
 $(function(){
   let pageCount = 0;
    //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
@@ -34,7 +32,6 @@ $(function(){
       "url": `https://ci.nii.ac.jp/books/opensearch/search?title=${searchWord}&format=json&p=${pageCount}&count=20`,
       "method": "GET",
     }
-  
 
     //.doneが通信成功した時の処理、”response”が引数となっていて通信した結果を受け取っている
     $.ajax(settings).done(function (response) {
@@ -69,7 +66,7 @@ $(function(){
         // 検索結果を表示するHTML要素を追加
         $('.lists').prepend('<li class="lists-item"><div class="list-inner"><p class="title">タイトル：' + title + '</p><p class="creator">作者：' + creator + '</p><p class="publisher">出版社：' + publisher + '</p><a href=' + info + ' class="info" target="_blank">書籍情報</a></div></li>')
       })
-      
+
      //resultが無かった時の処理
     } else {
       $('.inner').prepend('<div class="message" >検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>')
