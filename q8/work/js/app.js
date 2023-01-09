@@ -16,14 +16,17 @@ $(function(){
   let pageCount = 0;
    //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
   let previousVal = $("#search-input").val(null)
+
   // 検索ボタンをクリックした時に発火
   $(".search-btn").on("click", function(){
     const searchWord =  $("#search-input").val() //検索ワードを格納
-
+console.log(searchWord)
     // 検索ワードが同じ時と違う時の条件分岐
-    if(searchWord === previousVal){
+    if(searchWord === previousVal){ //今回検索ワードと前回検索ワードが同じ場合
       pageCount += 1;
-    } else {
+    } else if(searchWord == ""){ //検索ワードに入力が無い場合
+      previousVal = "";
+    } else { //検索ワードが前回と違った場合
       pageCount = 1;
       previousVal = searchWord;  //今回の検索ワードをグローバル変数に置き換え
       $('ul').empty()  //検索ワードが違う場合は前回の検索結果を削除する。
@@ -66,39 +69,9 @@ $(function(){
 
       　 // prepend()メソッド、指定の要素の先頭に子要素を追加
         // 検索結果を表示するHTML要素を追加
-        $('.lists').prepend('<li class="lists-item"><div class="list-inner" id="list-inner"><p class="title" id="title" >タイトル：' + title + '</p><p class="creator" id="creator" >作者：' + creator + '</p><p class="publisher" id="publisher" >出版社：' + publisher + '</p><a href=' + info + ' class="info" id="info" target="_blank">書籍情報</a></div></li>')
-        // 表示結果を左寄せする
-        $('.list-inner').css("text-align", "left")
-
-        //繰り返し処理によって同じClass名が複数存在するとDomの特定が難しいため、毎回class名を一旦削除する。
-        $('.title').removeClass();
-        $('.creator').removeClass();
-        $('.publisher').removeClass();
-        $('.info').removeClass();
+        $('.lists').prepend('<li class="lists-item"><div class="list-inner"><p class="title">タイトル：' + title + '</p><p class="creator">作者：' + creator + '</p><p class="publisher">出版社：' + publisher + '</p><a href=' + info + ' class="info" target="_blank">書籍情報</a></div></li>')
       })
-
-      // for分を使って繰り返し処理実行。
-      // 書き方→for(初期値; 条件式; 増減式) {処理の実装}
-      // for (var i = 0; result[i]; i++){
-      //   // resultから必要なデータを格納。 変数[i]を指定する事でresultの配列番号を指定
-      //   const title = result[i].title;
-      //   const creator = result[i]['dc:creator'] 
-      //   const publisher = result[i]['dc:publisher'] 
-      //   const info = result[i].link['@id'] 
-
-      //   // prepend()メソッド、指定の要素の先頭に子要素を追加
-      //   // 検索結果を表示するHTML要素を追加
-      //   $('.lists').prepend('<li class="lists-item"><div class="list-inner" id="list-inner"><p class="title" id="title" >タイトル：' + title + '</p><p class="creator" id="creator" >作者：' + creator + '</p><p class="publisher" id="publisher" >出版社：' + publisher + '</p><a href=' + info + ' class="info" id="info" target="_blank">書籍情報</a></div></li>')
-      //   // 表示結果を左寄せする
-      //   $('.list-inner').css("text-align", "left")
-
-      //   //繰り返し処理によって同じClass名が複数存在するとDomの特定が難しいため、毎回class名を一旦削除する。
-      //   $('.title').removeClass();
-      //   $('.creator').removeClass();
-      //   $('.publisher').removeClass();
-      //   $('.info').removeClass();
-      //   } //for文ここまで
-
+      
      //resultが無かった時の処理
     } else {
       $('.inner').prepend('<div class="message" >検索結果が見つかりませんでした。<br>別のキーワードで検索してください。</div>')
