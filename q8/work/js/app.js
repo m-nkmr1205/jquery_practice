@@ -11,7 +11,7 @@
 // });
 
 $(function(){
-  let pageCount = 0;
+  let pageCount = 1;
    //グローバル変数として前回値を持たせる。検索ワードを前回と比較した時に変数の置き換え処理を行う。
   let previousVal = "";
 
@@ -80,8 +80,10 @@ $(function(){
     console.log(err)
     let status = err.status  //ステータス番号を取得
 
-    // ステータス番号が0の時はメッセージを表示させる。
-    if(status === 0){
+    // エラーメッセージを表示させる。
+    if(previousVal === ""){
+      $('.inner').prepend('<div class="message" >検索ワードが入力されていません<br>1文字以上入力してください。</div>')
+    } else if(status === 0) {
       $('.inner').prepend('<div class="message" >正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>')
     } else {
       $('.inner').prepend('<div class="message" >予期せぬエラーが発生しました<br>再読み込みを行なってください。</div>')
@@ -95,7 +97,7 @@ $(function(){
     $(".message").remove();  //エラーメッセージ等は要素ごと削除
     $("#search-input").val('')  //検索ワードを空にする
     pageCount = 1;
-    previousVal = $("#search-input").val(null)
+    previousVal = "";
   }); //リセットボタンここまで
 
 }); //最後の閉じタグ
