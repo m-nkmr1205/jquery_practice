@@ -80,12 +80,12 @@ $(function(){
     console.log(err)
     let status = err.status  //ステータス番号を取得
 
-    // エラーメッセージを表示させる。
-    if(previousVal === ""){
-      $('.inner').prepend('<div class="message" >検索ワードが入力されていません<br>1文字以上入力してください。</div>')
-    } else if(status === 0) {
+    // ステータス番号が0の時はメッセージを表示させる。
+    if(status === 400){
       $('.inner').prepend('<div class="message" >正常に通信できませんでした。<br>インターネットの接続の確認をしてください。</div>')
-    } else {
+    } else if(status === 0) {
+      $('.inner').prepend('<div class="message" >検索ワードが入力されていません<br>1文字以上入力してください。</div>')
+    }else {
       $('.inner').prepend('<div class="message" >予期せぬエラーが発生しました<br>再読み込みを行なってください。</div>')
     };
 
